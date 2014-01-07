@@ -49,6 +49,7 @@ class Package < Sequel::Model
 end
 
 get '/packages' do
+  content_type 'application/json'
   Package.order(:name).all.to_json
 end
 
@@ -71,11 +72,13 @@ get '/packages/:name' do
 
   return 404 unless package
 
+  content_type 'application/json'
   package.hit!
   package.to_json
 end
 
 get '/packages/search/:name' do
+  content_type 'application/json'
   packages = Package.filter(:name.ilike("%#{params[:name]}%")).order(:hits.desc)
   packages.all.to_json
 end
